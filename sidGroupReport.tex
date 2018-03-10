@@ -1,5 +1,11 @@
 \documentclass[a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
 \usepackage{graphicx}
+
+\newcommand{\mat}[1]{\mathbf{#1}}
+\renewcommand{\vec}[1]{\bm{#1}}
 
 \begin{document}
 \title{Sid's Group Report}
@@ -13,7 +19,25 @@ The direct method is possibly the most logically straightforward way to solve
 for the values of the mesh points. It involves expressing the relationships of
 the various grid points with each other through a system of simultaneous
 equations, and then solving this system to obtain a vector containing the
-solutions to the mesh points.
+solutions to the mesh points. Thus, in contrast to the iterative methods,
+results are obtained at their final accuracy rather than being successively
+improved over several cycles.
+
+In our implementation we consider as system of the form:
+\begin{align*}
+	-4&V_1+V_2+0V_3+0V_4+V_5+\dots+0V_{16}&=0\\
+	&V_1-4V_2+V_3+0V_4+0V_5+V_6+\dots+0V_{16}&=0\\
+	&\vdots\\
+	0&V_1+\dots+V_{12}+0V_{13}+0V_{14}+V_{15}-4V_{16}&=0\\
+\end{align*}
+Which can be expressed by the matrix equation:
+\begin{equation*}
+	\mat{A}\vec{v}=\vec{b}
+\end{equation*}
+Where $\mat{A}$ is a matrix holding the coefficients of the system, $\vec{v}$
+holds the voltage solutions, and $\vec{b}$ represents the right hand values of
+the system.
+
 
 
 
