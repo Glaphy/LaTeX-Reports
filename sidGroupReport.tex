@@ -8,11 +8,11 @@
 \renewcommand{\vec}[1]{\bm{#1}}
 
 \begin{document}
-\title{Sid's Group Report}
-\author{Siddhartha Menon}
-\date{\today}
-
-\maketitle
+%\title{Sid's Group Report}
+%\author{Siddhartha Menon}
+%\date{\today}
+%
+%\maketitle
 
 \section{Introduction to the Direct Method}
 The direct method is possibly the most logically straightforward way to solve
@@ -36,7 +36,28 @@ Which can be expressed by the matrix equation:
 \end{equation*}
 Where $\mat{A}$ is a matrix holding the coefficients of the system, $\vec{v}$
 holds the voltage solutions, and $\vec{b}$ represents the right hand values of
-the system.
+the system. We could now apply a variety of generic matrix solving techniques
+to find $\vec{v}$ but these methods quickly become impossible to practically
+implement in larger problems for reasons discussed in the following sections.
+
+\section{Implementation of the Direct Method}
+The first thing to notice is that if we have a $N\times N$ grid then the
+coefficient matrix has $N^4$ elements. This quartic growth means that the
+storage space required quickly overtakes any realistic memory capacity.
+Furthermore, even if one could procure such an expansive memory device, we
+would still leave much to be desired in terms of efficiency. To understand why
+this is, consider the structure of the matrix $\mat{A}$. We can notice that on
+any given line there are at most five non zero elements: the point of interest,
+and the four points around it. The rest of the elements on that row are
+initialised to zero. The net effect of this is that the matrix $\mat{A}$ is
+\emph{extremely} sparse, especially for large $N$. In fact the sparseness of
+the matrix is the principle factor on which optimisations are made. In the next
+section we discuss methods of storing large sparse matrices and the challenges
+they present.
+
+\subsection{Storage Sytems for Sparse Matrices}
+
+
 
 
 
