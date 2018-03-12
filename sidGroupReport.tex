@@ -51,14 +51,59 @@ any given line there are at most five non zero elements: the point of interest,
 and the four points around it. The rest of the elements on that row are
 initialised to zero. The net effect of this is that the matrix $\mat{A}$ is
 \emph{extremely} sparse, especially for large $N$. In fact the sparseness of
-the matrix is the principle factor on which optimisations are made. In the next
-section we discuss methods of storing large sparse matrices and the challenges
-they present.
+the matrix is the principle factor on which optimisations are made~\cite{NR}.
+In the next section we discuss methods of storing large sparse matrices and the
+challenges they present.
 
-\subsection{Storage Sytems for Sparse Matrices}
+\subsection{Storage Systems for Sparse Matrices}
+The essential idea behind sparse matrix compression is to minimise the required
+storage space by only storing non-zero elements and there respective positions
+such that all the information of the original matrix is still preserved.
+Although there several compression schemes available~\cite{101matstore} we
+utilised coordinate storage (COO) and compressed column storage (CCS).
+
+The COO storage format is possibly the simplest to understand and implement. It
+essentially involves storing three columns or arrays of data: one that tracks
+the row numbers of the non-zero elements, another that tracks the column
+numbers, and finally one that tracks the values themselves. While this method
+offers a fairly good compression rate for large $N$ and is easy to implement,
+it does suffer from a few drawbacks. Firstly, it does not optimise on the fact
+that several non-zero elements share the same column (or row) number; secondly,
+and more significantly, if we wanted to access the non-zero element $v$ with
+row number $i$ and column number $j$ we would have to scan through all the
+elements preceding it.
+
+To overcome these shortfalls we may use the CCS format. As done previously we
+will maintain three data sets, one of which will hold the non-zero values. The
+second data set will hold the corresponding row values of those elements.
+Finally, the third set holds holds \emph{column offsets} which tell us where in
+the value set the next column begins. This not only reduces the space required
+but also allows us to \emph{jump} to a requested value by referring to the
+column offsets rather than scanning through every element~\cite{101matstore}.
+
+\section{Formulating the Matrix System}
 
 
 
+
+
+
+\begin{thebibliography}{9}
+
+	\bibitem{NR}
+		\emph{Numerical Recipes: The Art of Scientific Computing}\\
+		W. H. Press, S. A. Teukolsky, W. T. Vetterling, B. P. Flannery\\
+		September 2007\\
+		ISBN: 9780521880688
+
+	\bibitem{101matstore}
+		\emph{101 Ways to Store a Sparse Matrix}\\
+		Max Grossman\\
+		\texttt{https://medium.com/@jmaxg3/101-ways-to-store-a-sparse
+		-matrix-c7f2bf15a229}\\
+		Accessed: 12\textsuperscript{th} March 2018
+
+\end{thebibliography}
 
 
 
