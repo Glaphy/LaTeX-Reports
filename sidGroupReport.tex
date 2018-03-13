@@ -1,4 +1,6 @@
 \documentclass[a4paper]{article}
+\usepackage[labelfont={bf,it}, textfont=it, justification=centering]{caption}
+\usepackage{titlesec}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{bm}
@@ -6,6 +8,12 @@
 
 \newcommand{\mat}[1]{\mathbf{#1}}
 \renewcommand{\vec}[1]{\bm{#1}}
+
+\setlength{\parindent}{0em}
+\setlength{\parskip}{8pt}
+
+\titlespacing\section{0pt}{12pt}{2pt}
+\titlespacing\subsection{0pt}{12pt}{2pt}
 
 \begin{document}
 %\title{Sid's Group Report}
@@ -31,9 +39,10 @@ In our implementation we consider as system of the form:
 	0&V_1+\dots+V_{12}+0V_{13}+0V_{14}+V_{15}-4V_{16}&=0\\
 \end{align*}
 Which can be expressed by the matrix equation:
-\begin{equation*}
+\begin{equation}
 	\mat{A}\vec{v}=\vec{b}
-\end{equation*}
+	\label{matEq}
+\end{equation}
 Where $\mat{A}$ is a matrix holding the coefficients of the system, $\vec{v}$
 holds the voltage solutions, and $\vec{b}$ represents the right hand values of
 the system. We could now apply a variety of generic matrix solving techniques
@@ -81,13 +90,66 @@ the value set the next column begins. This not only reduces the space required
 but also allows us to \emph{jump} to a requested value by referring to the
 column offsets rather than scanning through every element~\cite{101matstore}.
 
-\section{Formulating the Matrix System}
+\subsection{Formulating the Linear System}
+The system of equations as described thus far holds no information with regard
+to any specific geometry and therefore solves no particular problem. Thus, an
+essential step is finding a mechanism where by the system can be tweaked to
+reflect a given problem.
+
+To see how this was achieved, consider the $4 \times 4$ grid shown
+in Fig.~\ref{gridFig} with a voltage of 25V at $v_6$. How can this information
+be represented in the system? The solution employed was to zero out the row
+corresponding to $V_6$ (row 7 if we index from 0) and write a 1 into its
+diagonal. We then write 25 in the corresponding element of the $\vec{b}$
+vector. The reason this works can be seen by multiplying out the left hand side
+of~\eqref{matEq}. Notice that all the zero elements in row 7 will ensure almost
+all the variables disappear, leaving only the 1 in the diagonal to be
+multiplied to yield the equation $v_6=25$ which is precisely the restriction we
+wished to specify.
+
+To deal with the boundaries we use a method we shall call \emph{adaptive
+stencilling}\footnote{this is a fairly simple modification of the five point
+star, but at the time of writing we failed to find reference or utilisation of
+it in the scientific literature}. The idea is to adapt the number of
+\emph{legs} of our stencil as we crawl the mesh depending on where we are;
+changing from a three point stencil to a four point one when we are at the
+corners or the sides respectively. Without this modification, every time we
+wish to calculate a point on the side of the grid (e.g. $v_{11}$ in
+Fig.~\ref{gridFig}) we end up dividing the by 4 even though we only have 3
+neighbours. Thus it is as if we have assumed there to be a fourth point that is
+always 0. The net result of this is the boundaries are fixed at nearly zero
+which, needless to say, is in general incorrect.
+%Figure of the 4x4 grid.
+\begin{figure}
+\centering
+\includegraphics[scale=0.09]{4x4grid.png}
+\caption{An example of a $4 \times 4$ grid}
+\label{gridFig}
+\end{figure}
+
+Now that the matrix can be stored and tailored to our problems we can explore
+how the system is solved.
+
+\subsection{Solving the Linear System}
+
+\section{Performance of the Direct Method}
+We evaluated various metrics to gauge the performance of the algorithm. First
+we measured execution time with image size (see Fig.~\ref{sizetestFig})
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.21]{sizebenchmark.eps}
+	\caption{Variation of the solve time (in seconds) to $N$. The data fits
+	quite well to a $N^4$ curve which is to be expected as this is the rate
+	at which the matrix grows.}
+	\label{sizetestFig}
+\end{figure}
 
 
 
 
 
 
+\pagebreak
 \begin{thebibliography}{9}
 
 	\bibitem{NR}
