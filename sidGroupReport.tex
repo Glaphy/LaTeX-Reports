@@ -134,7 +134,7 @@ how the system is solved.
 
 \section{Performance of the Direct Method}
 We evaluated various metrics to gauge the performance of the algorithm. First
-we measured execution time with image size (see Fig.~\ref{sizetestFig})
+we measured execution time with image size (see Fig.~\ref{sizetestFig}).
 \begin{figure}
 	\centering
 	\includegraphics[scale=0.21]{sizebenchmark.eps}
@@ -143,11 +143,14 @@ we measured execution time with image size (see Fig.~\ref{sizetestFig})
 	at which the matrix grows.}
 	\label{sizetestFig}
 \end{figure}
+The code was tested with the same image at various sizes and the results were
+plotted. Although exact solve times vary depending on the specific geometry,
+the general trend should be the same.
 
-
-
-
-
+Error was analysed by comparing the analytical results of Problem~0 and
+Problem~1. For each pixel an absolute difference of the values was calculated
+and we were able to use this to calculate the relative error of the numerical
+solution.
 
 \pagebreak
 \begin{thebibliography}{9}

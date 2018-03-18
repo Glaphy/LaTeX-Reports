@@ -1,0 +1,15 @@
+It's now easy to compute $\vec{E}$ from the definition of the cylindrical gradient
+\begin{equation}\vec{E} = -\nabla V =  -\frac{\partial V}{\partial r} \hat{r} - 
+\frac{1}{r}\frac{\partial V}{\partial \phi} \hat{\phi}\end{equation}
+\begin{equation}\implies \boxed{\vec{E}(r,\phi) = 
+E_0\bigg[\hat{r}\bigg(1+\frac{R^2}{r^2}\bigg)\cos(\phi) - 
+\hat{\phi}\Big(1-\frac{R^2}{r^2}\Big)\sin(\phi)\bigg]}\end{equation}
+Finally, to make a sanity check we can compute the charge density on the 
+conductor's surface 
+\begin{equation}\sigma = \epsilon_0E(R,\phi) \implies \boxed{\sigma=2\epsilon_0 
+E_0 \cos(\phi)}
+\end{equation}
+Giving us that the total charge density is zero as we would expect.
+\begin{equation}\sigma_{total} = 2\epsilon_0 E_0 \int_0^{2\pi} \cos(\phi) d\phi 
+= 0
+\end{equation}
